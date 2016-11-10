@@ -28,7 +28,7 @@ def log(d):
     print d
 
 
-min_sup = 0.005
+min_sup = 0.01
 min_conf = 0.5
 path = './retail2.dat'
 
@@ -174,5 +174,83 @@ print 'len', len(dicc)
 # 由最小边缘频繁项集求强关系
 
 
+
+
+
+
+#
+#
+def c_n2(n, listt, l=[], b=0):  # 递归生成最小边缘强关系
+    ''' n 剩余选择数量
+        listt 全排列目标
+        b 起始值
+        l 临时记录
+    '''
+    if n == 0:  # 生成关系并计算支持度 
+        a = tuple(l)
+        print listt, a
+        sup = float(dicc[tuple(listt)]) / dicc[a]
+        b = filter(lambda x:x not in l, listt)
+        if sup >= min_conf:  
+            b = tuple(b)
+            a_r.append((a,b))
+#            print 'add:', (a,b)
+        else:
+#            print 'f(%s)'%str(b)
+            its_to_ar(b)
+        return
+    for i in range(b, len(listt)-n+1):
+        l += [listt[i]]
+        c_n2(n-1, listt, l, i+1)
+        l.pop()
+    return 
+
+def its_to_ar(its):  # 对边缘频繁项集 递归生成强规则
+    n = len(its)
+    if n == 1:
+        return
+    for lenth in range(1, n):
+        c_n2(lenth, its, [])
+
+
+for its in min_f:
+    its_to_ar(its)
+
+
+# 打印所有强关系
+for ar in a_r:
+    strr = ''
+    for i in ar[0]:
+        strr += str(i) + ' '
+    strr += '=> '
+    for i in ar[1]:
+        strr += str(i) + ' '
+    print strr
+
+#print 'dic=', len(dic)
+#print 'dicc=', len(dicc)
+#print 'min_f=', len(min_f)
+#print 'a_r=', len(a_r)
+#
+#print 'resoult',dicc.keys()
+# 
+
+print 'min Association Rules', len(a_r)
+print 'frequent itemset', len(dicc)
+
+#myy = my[:]
+#
+#
+#
+#for i in my[:]:
+#    if i in min_f:
+#        min_f.remove(i)
+#        my.remove(i)
+#
+#log(my)
+#print '\n_f'
+#log(min_f)
+#
+#my = myy
 
 

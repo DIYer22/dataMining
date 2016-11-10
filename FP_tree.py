@@ -38,7 +38,7 @@ def p_tree(t,level = 0):
         p_tree(t[i],level+1)
         
 
-min_sup = 0.005
+min_sup = 0.01
 min_conf = 0.5
 path = './retail2.dat'
 
@@ -221,7 +221,7 @@ r = header_to_db(fp_l, record)
 
 #print 'resoult',r
  
-print 'len', len(r)
+print 'frequent itemset', len(r)
  
  
 
